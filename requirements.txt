@@ -1,0 +1,32 @@
+# Requirements pour Python 3.9 - Serveur Production
+# Optimisé pour éviter les problèmes de compilation
+
+# Django Core
+Django==4.2.14
+asgiref==3.8.1
+sqlparse==0.5.3
+tzdata==2025.2
+
+# Database
+pymysql==1.1.0
+
+# API Framework
+djangorestframework==3.15.2
+
+# Production essentials
+gunicorn==21.2.0
+whitenoise==6.6.0
+
+# Security & Performance
+django-cors-headers==4.3.1
+django-environ==0.11.2
+
+# Optional: Useful packages for production
+pillow==10.1.0
+requests==2.31.0
+python-dateutil==2.8.2
+
+# Development tools (commented for production)
+# django-debug-toolbar==4.2.0
+# pytest==7.4.3
+# pytest-django==4.6.0

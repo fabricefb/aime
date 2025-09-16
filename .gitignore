@@ -1,0 +1,33 @@
+# Django
+*.pyc
+__pycache__/
+venv/
+.env
+*.sqlite3
+staticfiles/
+media/
+.DS_Store
+*.log
+*.pot
+*.mo
+*.py[cod]
+*.swp
+.idea/
+.vscode/
+*.egg-info/
+.eggs/
+db.sqlite3
+.env.*
+# macOS
+.DS_Store
+# VS Code
+.vscode/
+
+# Fichiers de déploiement volumineux (trop gros pour GitHub)
+*.zip
+aime-rdc-cpanel-deployment.zip
+deployment-complete.zip
+deployment/
+# Archives de déploiement
+deployment-*.zip
+aime-rdc-*.zip
