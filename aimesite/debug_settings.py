@@ -16,6 +16,20 @@ ALLOWED_HOSTS = ['aime-rdc.org', 'www.aime-rdc.org', '127.0.0.1', 'localhost', '
 USE_TZ = True
 TIME_ZONE = 'Africa/Kinshasa'  # Timezone RDC
 
+# Configuration pour le développement - Auto-reload des templates et fichiers statiques
+TEMPLATES[0]['OPTIONS']['context_processors'].append('django.template.context_processors.debug')
+TEMPLATES[0]['OPTIONS']['debug'] = True
+
+# Désactiver le cache pour voir les changements immédiatement
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+}
+
+# Reload automatique des fichiers statiques
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+
 # Base de données MySQL avec PyMySQL
 DATABASES = {
     'default': {
