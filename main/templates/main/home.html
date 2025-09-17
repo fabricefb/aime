@@ -17,7 +17,6 @@
     :root {
         --primary-color: #2c3e50;
         --secondary-color: #3498db;
-        --accent-color: #e74c3c;
         --success-color: #27ae60;
         --warning-color: #f39c12;
         --text-dark: #2c3e50;
@@ -156,7 +155,7 @@
     }
 
     .btn-primary {
-        background: linear-gradient(45deg, var(--accent-color), #ff6b6b);
+        background: linear-gradient(45deg, var(--secondary-color), #ff6b6b);
         color: white;
         box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
     }
@@ -339,7 +338,7 @@
     /* CTA Section */
     .cta-section {
         padding: 6rem 0;
-        background: linear-gradient(135deg, var(--accent-color) 0%, #ff6b6b 100%);
+        background: linear-gradient(135deg, var(--secondary-color) 0%, #ff6b6b 100%);
         color: white;
         text-align: center;
     }
@@ -382,14 +381,14 @@
     }
 
     .btn-cta-white {
-        background: white;
-        color: var(--accent-color);
+    background: white;
+    color: var(--secondary-color);
     }
 
     .btn-cta-white:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        color: var(--accent-color);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    color: var(--secondary-color);
     }
 
     .btn-cta-outline {
@@ -399,9 +398,9 @@
     }
 
     .btn-cta-outline:hover {
-        background: white;
-        color: var(--accent-color);
-        transform: translateY(-3px);
+    background: white;
+    color: var(--secondary-color);
+    transform: translateY(-3px);
     }
 
     /* Animations */
@@ -874,7 +873,7 @@ function initLiveChat() {
             .map(el => el.textContent)
             .join(' | ');
         
-        const whatsappUrl = `https://wa.me/243XXXXXXXXX?text=${encodeURIComponent(
+        const whatsappUrl = `https://wa.me/243823090002?text=${encodeURIComponent(
             `Bonjour AIME ! J'aimerais parler directement avec un membre de votre équipe. Voici mon historique avec l'assistant : ${userMessage || 'Nouvelle conversation'}`
         )}`;
         
@@ -958,7 +957,7 @@ function initLiveChat() {
                     <i class="fab fa-whatsapp"></i> Contacter via WhatsApp
                 </button>
                 <p style="margin-top: 8px; font-size: 0.8em; opacity: 0.8;">
-                    Ou appelez-nous directement : +243 XXX XXX XXX
+                    Ou appelez-nous directement : +243 082 309 0002
                 </p>
             </div>
             <div class="message-time">${new Date().toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'})}</div>
@@ -1003,7 +1002,7 @@ function initLiveChat() {
                 console.error('Erreur réseau:', error);
             });
             
-            const whatsappUrl = `https://wa.me/243844444411text=${encodeURIComponent(
+            const whatsappUrl = `https://wa.me/243823090002?text=${encodeURIComponent(
                 `Bonjour AIME ! J'aimerais parler directement avec un membre de votre équipe. Voici mon historique avec l'assistant : ${conversationHistory}`
             )}`;
             
