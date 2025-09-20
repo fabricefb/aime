@@ -1,0 +1,14 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/cp2639565p41/aime-rdc/
+    # Copier tous les fichiers
+    - /bin/cp -R * $DEPLOYPATH
+    # Installer les dépendances Python
+    - /usr/local/bin/pip3 install -r $DEPLOYPATH/requirements.txt
+    # Collecter les fichiers statiques
+    - /usr/local/bin/python3 $DEPLOYPATH/manage.py collectstatic --noinput
+    # Appliquer les migrations
+    - /usr/local/bin/python3 $DEPLOYPATH/manage.py migrate --noinput
+    # Redémarrer l'application
+    - touch $DEPLOYPATH/tmp/restart.txt
