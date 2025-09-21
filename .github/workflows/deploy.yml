@@ -1,0 +1,20 @@
+name: Deploy to cPanel
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+      
+    - name: Deploy to cPanel
+      env:
+        DEPLOY_PATH: /home/cp2639565p41/aime-rdc.org
+      run: |
+        echo "Deploying to cPanel..."
+        curl -X POST https://aime-rdc.org/cpanelwebhook/
+        echo "Deployment webhook triggered"
