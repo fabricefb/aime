@@ -1,9 +1,14 @@
 # 🔧 GUIDE RAPIDE POUR VOIR LES MODIFICATIONS EN SSH
 
-## 🚀 Commandes essentielles après chaque modification :
+## � Chemins importants :
+- Site : `/home/cp2639565p41/aime-rdc.org`
+- Virtualenv : `/home/cp2639565p41/virtualenv/aime-rdc.org/3.9/bin/activate`
+
+## �🚀 Commandes essentielles après chaque modification :
 
 ### ⚡ **Redémarrage rapide (utilisez ceci après chaque modification) :**
 ```bash
+cd /home/cp2639565p41/aime-rdc.org
 ./restart-site.sh
 ```
 
@@ -22,7 +27,7 @@ python3 manage.py collectstatic --noinput
 
 ### 👀 **Mode surveillance automatique :**
 ```bash
-# Lance la surveillance automatique (recharge toutes les 30s)
+cd /home/cp2639565p41/aime-rdc.org
 ./dev-watch.sh
 ```
 

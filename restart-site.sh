@@ -1,22 +1,36 @@
 #!/bin/bash
 
+# Définition du chemin correct
+SITE_PATH="/home/cp2639565p41/aime-rdc.org"
+
+# Aller dans le répertoire du site
+cd $SITE_PATH || {
+    echo "❌ Erreur: Impossible d'accéder au dossier $SITE_PATH"
+    exit 1
+}
+
 echo "🔄 Redémarrage du site AIME en cours..."
 
-# 1. Collecter les fichiers statiques
+# 1. Activer l'environnement virtuel Python
+source /home/cp2639565p41/virtualenv/aime-rdc.org/3.9/bin/activate || {
+    echo "❌ Erreur: Impossible d'activer l'environnement virtuel"
+    exit 1
+}
+
+# 2. Collecter les fichiers statiques
 echo "📁 Collection des fichiers statiques..."
 python3 manage.py collectstatic --noinput
 
-# 2. Appliquer les migrations si nécessaire
+# 3. Appliquer les migrations si nécessaire
 echo "🗄️ Application des migrations..."
 python3 manage.py migrate
 
-# 3. Redémarrer Passenger (pour cPanel)
+# 4. Redémarrer Passenger (pour cPanel)
 echo "🔄 Redémarrage de l'application..."
-touch tmp/restart.txt
-mkdir -p tmp
-touch tmp/restart.txt
+mkdir -p $SITE_PATH/tmp
+touch $SITE_PATH/tmp/restart.txt
 
-# 4. Vider le cache Django si configuré
+# 5. Vider le cache Django si configuré
 echo "🧹 Nettoyage du cache..."
 python3 manage.py collectstatic --clear --noinput
 python3 manage.py collectstatic --noinput
