@@ -35,5 +35,5 @@ echo "🧹 Nettoyage du cache..."
 python3 manage.py collectstatic --clear --noinput
 python3 manage.py collectstatic --noinput
 
-echo "✅ Site redémarré avec succès !"
-echo "🌐 Vos modifications sont maintenant visibles sur le site"
+echo "✅ Site redémarré avec succès ! [Version du 27 Sept 2025]"
+echo "🌐 Vos modifications sont maintenant visibles sur aime-rdc.org"
