@@ -1,7 +1,7 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/cp2639565p41/aime-rdc.org/
+    - export DEPLOYPATH=/home/cp2639565p41/public_html/
     # Copier tous les fichiers
     - /bin/cp -R * $DEPLOYPATH
     - /bin/cp .htaccess $DEPLOYPATH

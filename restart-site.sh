@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Définition du chemin correct
-SITE_PATH="/home/cp2639565p41/aime-rdc.org"
+SITE_PATH="/home/cp2639565p41/public_html"
 
 # Aller dans le répertoire du site
 cd $SITE_PATH || {
