@@ -468,3 +468,45 @@ class ImpactPoint(models.Model):
 
     def __str__(self):
         return f"Impact {self.type} ({self.related_model} #{self.related_id})"
+
+
+class VisitorFeedback(models.Model):
+    """Avis et retours des visiteurs du site"""
+    CONTRIBUTION_CHOICES = [
+        ('ideas', 'Partager des idées'),
+        ('member', 'Devenir membre'),
+        ('volunteer', 'Participer aux activités'),
+        ('donate', 'Faire un don'),
+        ('partner', 'Devenir partenaire'),
+        ('other', 'Autre'),
+    ]
+    
+    # Informations du visiteur
+    name = models.CharField(max_length=100, blank=True, verbose_name="Nom")
+    email = models.EmailField(blank=True, verbose_name="Email")
+    phone = models.CharField(max_length=20, blank=True, verbose_name="Téléphone")
+    
+    # Avis et contribution
+    opinion = models.TextField(verbose_name="Avis sur le site/projet")
+    contribution_type = models.CharField(
+        max_length=20, 
+        choices=CONTRIBUTION_CHOICES,
+        verbose_name="Type de contribution souhaitée"
+    )
+    contribution_details = models.TextField(blank=True, verbose_name="Détails de la contribution")
+    
+    # Métadonnées
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
+    user_agent = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_contacted = models.BooleanField(default=False, verbose_name="Contacté")
+    contacted_at = models.DateTimeField(null=True, blank=True)
+    notes = models.TextField(blank=True, verbose_name="Notes internes")
+    
+    class Meta:
+        verbose_name = "Avis visiteur"
+        verbose_name_plural = "Avis visiteurs"
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        return f"Avis de {self.name or 'Anonyme'} - {self.created_at.strftime('%d/%m/%Y')}"

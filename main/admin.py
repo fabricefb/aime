@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import (
     UserProfile, Category, Project, MutotoBikeChallenge, MBCParticipant,
     MutoScienceAdventure, Event, Donation, ContactMessage, 
-    NewsletterSubscription, UserActivity, Staff
+    NewsletterSubscription, UserActivity, Staff, VisitorFeedback
 )
 
 @admin.register(UserProfile)
@@ -74,3 +74,34 @@ class UserActivityAdmin(admin.ModelAdmin):
 class StaffAdmin(admin.ModelAdmin):
     list_display = ['user', 'position', 'years_experience', 'is_visible']
     list_filter = ['position', 'is_visible']
+
+
+@admin.register(VisitorFeedback)
+class VisitorFeedbackAdmin(admin.ModelAdmin):
+    list_display = ['name', 'email', 'phone', 'contribution_type', 'created_at', 'is_contacted']
+    list_filter = ['contribution_type', 'is_contacted', 'created_at']
+    search_fields = ['name', 'email', 'phone', 'opinion']
+    readonly_fields = ['ip_address', 'user_agent', 'created_at']
+    fieldsets = (
+        ('Informations du visiteur', {
+            'fields': ('name', 'email', 'phone')
+        }),
+        ('Avis et contribution', {
+            'fields': ('opinion', 'contribution_type', 'contribution_details')
+        }),
+        ('Suivi', {
+            'fields': ('is_contacted', 'contacted_at', 'notes')
+        }),
+        ('Métadonnées', {
+            'fields': ('ip_address', 'user_agent', 'created_at'),
+            'classes': ('collapse',)
+        }),
+    )
+    
+    actions = ['mark_as_contacted']
+    
+    def mark_as_contacted(self, request, queryset):
+        from django.utils import timezone
+        updated = queryset.update(is_contacted=True, contacted_at=timezone.now())
+        self.message_user(request, f"{updated} avis marqué(s) comme contacté(s).")
+    mark_as_contacted.short_description = "Marquer comme contacté"

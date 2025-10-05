@@ -6,6 +6,8 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <!-- Chart.js pour les graphiques -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- CSS Amélioré pour carte moderne et responsive -->
+<link rel="stylesheet" href="{% static 'main/map-enhanced.css' %}">
 
 <style>
     /* Hero Section pour la carte interactive */
@@ -358,12 +360,17 @@
                 </div>
                 
                 <!-- Carte -->
+                {% if impact_data == '[]' or not impact_data %}
+                    <!-- État vide : aucune donnée d'impact -->
+                    {% include 'main/partials/map-empty-state.html' %}
+                {% else %}
                 <div class="d-flex justify-content-end mb-3">
                     <button id="toggle-view-btn" class="btn btn-outline-primary">
                         <i class="fas fa-list me-2"></i>Afficher la liste/statistiques
                     </button>
                 </div>
                 <div id="impact-map" style="display: block;"></div>
+                {% endif %}
                 <div id="impact-list-view" style="display: none;">
                     <div class="dashboard-widget">
                         <div class="widget-header">
@@ -648,57 +655,20 @@ function createImpactChart() {
     });
 }
 
-// Simulation de mises à jour en temps réel
-function simulateRealTimeUpdates() {
-    const indicator = document.getElementById('real-time-indicator');
-    
-    setInterval(() => {
-        // Afficher l'indicateur
-        indicator.classList.remove('hidden');
-        
-        // Simulation d'un nouveau point d'impact
-        const newPoint = {
-            id: 'new_' + Date.now(),
-            title: 'Nouvelle inscription MBC',
-            type: 'event',
-            lat: -4.4419 + (Math.random() - 0.5) * 0.01,
-            lng: 15.2663 + (Math.random() - 0.5) * 0.01,
-            description: 'Un nouvel enfant vient de s\'inscrire',
-            impact_value: 1,
-            date: new Date().toLocaleDateString(),
-            category: 'Inscription'
-        };
-        
-        // Ajouter le marqueur avec animation
-        const icon = createCustomIcon(newPoint.type, newPoint.impact_value);
-        const marker = L.marker([newPoint.lat, newPoint.lng], { icon })
-            .bindPopup(`
-                <div class="impact-popup">
-                    <h6 class="text-primary">${newPoint.title}</h6>
-                    <p class="mb-2">${newPoint.description}</p>
-                    <span class="badge bg-success">Nouveau</span>
-                </div>
-            `)
-            .addTo(markerGroups[newPoint.type]);
-        
-        // Mettre à jour les statistiques
-        const statElement = document.getElementById('stat-beneficiaries');
-        const currentValue = parseInt(statElement.textContent);
-        statElement.textContent = currentValue + 1;
-        
-        // Cacher l'indicateur après 3 secondes
-        setTimeout(() => {
-            indicator.classList.add('hidden');
-        }, 3000);
-        
-    }, 15000); // Toutes les 15 secondes
+// Fonction pour vérifier de nouvelles activités réelles (optionnel)
+// Utilisez cette fonction seulement si vous avez un vrai système de notifications en temps réel
+function checkForNewActivities() {
+    // Cette fonction peut être activée plus tard quand vous aurez un système de notifications
+    // Pour l'instant, les données se mettent à jour au rechargement de la page
+    console.log('Carte avec données réelles uniquement - Pas de simulation');
 }
 
 // Initialisation
 document.addEventListener('DOMContentLoaded', function() {
     updateTimeline();
     createImpactChart();
-    simulateRealTimeUpdates();
+    // simulateRealTimeUpdates(); // SUPPRIMÉ - Pas de simulation de données fictives
+    // Utilisez checkForNewActivities() si vous implémentez un vrai système temps réel
 });
 </script>
 {% endblock %}

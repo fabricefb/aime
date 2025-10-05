@@ -574,41 +574,44 @@
 <section class="impact-section">
     <div class="container">
         <div class="section-title">
-            <h2>Notre Impact Concret</h2>
-            <p>Découvrez comment AIME transforme concrètement la vie des enfants et de leurs communautés à travers nos programmes innovants.</p>
+            <h2>Fondations Solides - Notre Démarrage</h2>
+            <p style="max-width: 800px; margin: 0 auto 1rem auto;">Nous construisons notre impact pas à pas, avec authenticité et transparence. Chaque chiffre ci-dessous représente une action concrète, un enfant accompagné, une famille soutenue.</p>
+            <p class="text-muted" style="font-size: 0.95rem; font-style: italic;">
+                <i class="fas fa-seedling me-2"></i>Au fur et à mesure que les enfants et parents s'inscrivent, ces chiffres évolueront naturellement.
+            </p>
         </div>
         
         <div class="impact-grid">
             <div class="impact-card">
                 <div class="impact-icon">
-                    <i class="fas fa-graduation-cap"></i>
+                    <i class="fas fa-child"></i>
                 </div>
-                <div class="impact-number" data-target="{{ stats.formations_dispensed }}">0</div>
-                <div class="impact-label">Formations dispensées</div>
+                <div class="impact-number" data-target="{{ stats.total_children_helped }}">0</div>
+                <div class="impact-label">Enfants touchés directement</div>
                 <div class="impact-description">
-                    Formations en informatique, mécanique vélo, entrepreneuriat et développement personnel pour autonomiser les jeunes.
+                    Chaque enfant que nous accompagnons reçoit une attention personnalisée et un suivi de qualité.
                 </div>
             </div>
             
             <div class="impact-card">
                 <div class="impact-icon">
-                    <i class="fas fa-users"></i>
+                    <i class="fas fa-school"></i>
                 </div>
-                <div class="impact-number" data-target="{{ stats.families_supported }}">0</div>
-                <div class="impact-label">Familles soutenues</div>
+                <div class="impact-number" data-target="{{ stats.schools_partners }}">0</div>
+                <div class="impact-label">Écoles partenaires</div>
                 <div class="impact-description">
-                    Accompagnement direct des familles vulnérables à travers nos programmes d'assistance et de développement communautaire.
+                    Nous développons des partenariats solides avec les établissements scolaires pour maximiser notre impact.
                 </div>
             </div>
             
             <div class="impact-card">
                 <div class="impact-icon">
-                    <i class="fas fa-bicycle"></i>
+                    <i class="fas fa-map-marked-alt"></i>
                 </div>
-                <div class="impact-number" data-target="{{ stats.mbc_participants }}">0</div>
-                <div class="impact-label">Participants MBC</div>
+                <div class="impact-number" data-target="{{ stats.provinces_count }}">0</div>
+                <div class="impact-label">Provinces RDC</div>
                 <div class="impact-description">
-                    Jeunes ayant participé au Mutoto Bike Challenge, notre programme phare de sensibilisation environnementale.
+                    Démarrage à Kinshasa avec expansion progressive dans les 26 provinces de la RDC et la région.
                 </div>
             </div>
             
@@ -621,6 +624,61 @@
                 <div class="impact-description">
                     Communautés où nous intervenons activement pour améliorer les conditions de vie et créer des opportunités.
                 </div>
+            </div>
+            
+            <div class="impact-card">
+                <div class="impact-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <div class="impact-number" data-target="{{ stats.formations_dispensed }}">0</div>
+                <div class="impact-label">Formations dispensées</div>
+                <div class="impact-description">
+                    Ateliers et formations en informatique, mécanique vélo, et développement personnel.
+                </div>
+            </div>
+            
+            <div class="impact-card">
+                <div class="impact-icon">
+                    <i class="fas fa-bicycle"></i>
+                </div>
+                <div class="impact-number" data-target="{{ stats.mbc_participants }}">0</div>
+                <div class="impact-label">Participants MBC</div>
+                <div class="impact-description">
+                    Jeunes engagés dans notre programme phare de sensibilisation environnementale.
+                </div>
+            </div>
+            
+            <div class="impact-card">
+                <div class="impact-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="impact-number" data-target="{{ stats.families_supported }}">0</div>
+                <div class="impact-label">Familles accompagnées</div>
+                <div class="impact-description">
+                    Soutien direct aux familles vulnérables à travers nos programmes communautaires.
+                </div>
+            </div>
+            
+            <div class="impact-card">
+                <div class="impact-icon">
+                    <i class="fas fa-project-diagram"></i>
+                </div>
+                <div class="impact-number" data-target="{{ stats.active_projects }}">0</div>
+                <div class="impact-label">Projets actifs</div>
+                <div class="impact-description">
+                    Initiatives en cours pour créer un impact durable dans nos communautés.
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-5">
+            <div class="alert alert-info d-inline-block" style="background: rgba(52, 152, 219, 0.1); border: 2px solid #3498db; border-radius: 15px; padding: 1.5rem 2rem;">
+                <i class="fas fa-chart-line me-2" style="color: #3498db; font-size: 1.5rem;"></i>
+                <strong style="color: #2c3e50;">Croissance Authentique</strong>
+                <p class="mb-0 mt-2" style="color: #34495e;">
+                    Ces chiffres sont réels et évoluent quotidiennement. Notre force réside dans la qualité de notre accompagnement, pas dans des statistiques gonflées. 
+                    <br><strong>Chaque enfant compte, chaque famille compte.</strong>
+                </p>
             </div>
         </div>
     </div>
@@ -1022,7 +1080,7 @@ function initLiveChat() {
 <div id="livechat-widget" class="livechat-widget">
     <div class="chat-header">
         <div class="chat-avatar">
-            <img src="{% static 'main/images/logo-aime.png' %}" alt="AIME Logo" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+            <img src="{% static 'main/images/footer.png' %}" alt="AIME Logo" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
         </div>
         <div class="chat-info">
             <div class="chat-title">Assistant AIME</div>
@@ -1052,7 +1110,7 @@ function initLiveChat() {
 </div>
 
 <button id="chat-toggle" class="chat-toggle">
-    <img src="{% static 'main/images/logo-aime.png' %}" alt="AIME Chat" style="width: 70%; height: 70%; border-radius: 50%; object-fit: cover;">
+    <img src="{% static 'main/images/footer.png' %}" alt="AIME Chat" style="width: 70%; height: 70%; border-radius: 50%; object-fit: cover;">
     <span class="chat-notification">1</span>
 </button>
 
@@ -1353,5 +1411,8 @@ function initLiveChat() {
     background: linear-gradient(45deg, #128c7e, #25d366);
 }
 </style>
+
+<!-- Inclure la modal d'avis visiteur -->
+{% include 'main/visitor_feedback_modal.html' %}
 
 {% endblock %}

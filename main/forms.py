@@ -3,7 +3,7 @@ from django.core.validators import RegexValidator
 from django.contrib.auth.models import User
 from .models import (
     ContactMessage, NewsletterSubscription, MBCParticipant, 
-    Donation, MutotoBikeChallenge, UserProfile
+    Donation, MutotoBikeChallenge, UserProfile, VisitorFeedback
 )
 
 class UserProfileForm(forms.ModelForm):
@@ -281,3 +281,47 @@ class EventRegistrationForm(forms.Form):
             'placeholder': 'Régimes alimentaires spéciaux ou allergies'
         })
     )
+
+
+class VisitorFeedbackForm(forms.ModelForm):
+    """Formulaire d'avis et de retour des visiteurs"""
+    class Meta:
+        model = VisitorFeedback
+        fields = ['name', 'email', 'phone', 'opinion', 'contribution_type', 'contribution_details']
+        widgets = {
+            'name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Votre nom (optionnel)'
+            }),
+            'email': forms.EmailInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'votre@email.com (optionnel)'
+            }),
+            'phone': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': '+243 XXX XXX XXX (optionnel)'
+            }),
+            'opinion': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 4,
+                'placeholder': 'Partagez votre avis sur notre site ou notre projet...',
+                'required': True
+            }),
+            'contribution_type': forms.Select(attrs={
+                'class': 'form-select',
+                'required': True
+            }),
+            'contribution_details': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 3,
+                'placeholder': 'Dites-nous en plus sur comment vous souhaitez contribuer... (optionnel)'
+            }),
+        }
+        labels = {
+            'name': 'Votre nom',
+            'email': 'Email',
+            'phone': 'Téléphone',
+            'opinion': 'Que pensez-vous de notre site ou projet ? *',
+            'contribution_type': 'Comment souhaitez-vous contribuer ? *',
+            'contribution_details': 'Détails supplémentaires',
+        }
