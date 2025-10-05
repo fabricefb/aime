@@ -77,4 +77,7 @@ urlpatterns = [
     path('admin/chat/', views.chat_admin, name='chat_admin'),
     path('admin/chat/reply/<int:conversation_id>/', views.chat_reply, name='chat_reply'),
     path('admin/chat/close/<int:conversation_id>/', views.close_conversation, name='close_conversation'),
+    
+    # Avis visiteurs
+    path('api/visitor-feedback/', views.submit_visitor_feedback, name='submit_visitor_feedback'),
 ]

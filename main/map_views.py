@@ -19,6 +19,7 @@ class InteractiveMapView(TemplateView):
         from main.models import ImpactPoint, Event, Donation, Project, UserProfile
         context = super().get_context_data(**kwargs)
         context['title'] = "Carte Interactive de l'Impact Social AIME"
+        
         # Stats dynamiques
         context['stats'] = {
             'total_beneficiaries': UserProfile.objects.count(),
@@ -27,22 +28,35 @@ class InteractiveMapView(TemplateView):
             'active_projects': Project.objects.filter(status='active').count(),
             'volunteers': UserProfile.objects.filter(role='volunteer').count(),
         }
-        # Points d'impact réels
-        impact_points = ImpactPoint.objects.all()
+        
+        # Points d'impact réels (seulement ceux avec coordonnées valides)
+        impact_points = ImpactPoint.objects.filter(
+            latitude__isnull=False,
+            longitude__isnull=False
+        ).exclude(
+            latitude=0,
+            longitude=0
+        )
+        
         impact_data = []
         for point in impact_points:
-            impact_data.append({
-                'id': point.id,
-                'title': point.description or point.type,
-                'description': point.description,
-                'type': point.type,
-                'lat': float(point.latitude) if point.latitude else None,
-                'lng': float(point.longitude) if point.longitude else None,
-                'impact_value': float(point.value) if point.value else None,
-                'date': point.created_at.strftime('%Y-%m-%d'),
-                'status': point.status,
-            })
+            if point.latitude and point.longitude:  # Double vérification
+                impact_data.append({
+                    'id': point.id,
+                    'title': point.description or point.type,
+                    'description': point.description,
+                    'type': point.type,
+                    'lat': float(point.latitude),
+                    'lng': float(point.longitude),
+                    'impact_value': float(point.value) if point.value else 1,
+                    'date': point.created_at.strftime('%d/%m/%Y'),
+                    'status': point.status,
+                })
+        
         context['impact_data'] = json.dumps(impact_data)
+        context['has_impact_data'] = len(impact_data) > 0
+        context['impact_points'] = impact_points
+        
         return context
 
 def get_impact_data(request):

@@ -13,9 +13,9 @@ import json
 from .models import (
     Project, Category, Event, MutotoBikeChallenge, MBCParticipant,
     ContactMessage, NewsletterSubscription, Donation, Staff,
-    MutoScienceAdventure, ChatConversation, ChatMessage, User
+    MutoScienceAdventure, ChatConversation, ChatMessage, User, VisitorFeedback
 )
-from .forms import ContactForm, NewsletterForm, MBCRegistrationForm, DonationForm
+from .forms import ContactForm, NewsletterForm, MBCRegistrationForm, DonationForm, VisitorFeedbackForm
 from .utils import get_site_statistics
 
 def home(request):
@@ -511,3 +511,61 @@ def close_conversation(request, conversation_id):
             'success': False,
             'error': str(e)
         }, status=500)
+
+
+@require_POST
+def submit_visitor_feedback(request):
+    """Soumettre un avis visiteur"""
+    if request.method == 'POST':
+        form = VisitorFeedbackForm(request.POST)
+        
+        if form.is_valid():
+            feedback = form.save(commit=False)
+            
+            # Capturer l'adresse IP et l'agent utilisateur
+            x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+            if x_forwarded_for:
+                feedback.ip_address = x_forwarded_for.split(',')[0]
+            else:
+                feedback.ip_address = request.META.get('REMOTE_ADDR')
+            
+            feedback.user_agent = request.META.get('HTTP_USER_AGENT', '')
+            feedback.save()
+            
+            # Envoyer une notification par email à l'équipe (optionnel)
+            try:
+                send_mail(
+                    subject=f'Nouvel avis visiteur - {feedback.get_contribution_type_display()}',
+                    message=f'''
+                    Nouvel avis reçu !
+                    
+                    Nom: {feedback.name or 'Non renseigné'}
+                    Email: {feedback.email or 'Non renseigné'}
+                    Téléphone: {feedback.phone or 'Non renseigné'}
+                    
+                    Avis:
+                    {feedback.opinion}
+                    
+                    Souhaite contribuer en: {feedback.get_contribution_type_display()}
+                    
+                    Détails:
+                    {feedback.contribution_details or 'Aucun détail supplémentaire'}
+                    ''',
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=[settings.CONTACT_EMAIL] if hasattr(settings, 'CONTACT_EMAIL') else ['contact@aime-rdc.org'],
+                    fail_silently=True,
+                )
+            except Exception as e:
+                print(f"Erreur lors de l'envoi de l'email de notification: {e}")
+            
+            return JsonResponse({
+                'success': True,
+                'message': 'Merci pour votre avis ! Nous vous contacterons bientôt.'
+            })
+        else:
+            return JsonResponse({
+                'success': False,
+                'errors': form.errors
+            }, status=400)
+    
+    return JsonResponse({'success': False, 'error': 'Méthode non autorisée'}, status=405)
