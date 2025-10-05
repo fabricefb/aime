@@ -1,27 +1,11 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/cp2639565p41/public_html/
-    # Copier tous les fichiers
+    - export DEPLOYPATH=/home/cp2639565p41/public_html
     - /bin/cp -R * $DEPLOYPATH
-    - /bin/cp .htaccess $DEPLOYPATH
-    # Activer l'environnement virtuel
-    - source /home/cp2639565p41/virtualenv/aime-rdc.org/3.9/bin/activate
-    # Installer les dépendances
-    - cd $DEPLOYPATH && pip install -r requirements.txt
-    # Appliquer les migrations
-    - cd $DEPLOYPATH && python manage.py migrate --no-input
-    # Collecter les fichiers statiques
-    - cd $DEPLOYPATH && python manage.py collectstatic --no-input
-    # Redémarrer l'application
+    - /bin/cp -R .htaccess $DEPLOYPATH 2>/dev/null || true
     - mkdir -p $DEPLOYPATH/tmp
-    - touch $DEPLOYPATH/tmp/restart.txt
-    # Corriger les permissions
-    - chmod 755 $DEPLOYPATH/restart-site.sh
-    - chmod 755 $DEPLOYPATH/dev-watch.sh
-    - chmod -R 755 $DEPLOYPATH/staticfiles
-    - chmod -R 755 $DEPLOYPATH/main/static
-    # Appliquer les migrations
-    - /usr/local/bin/python3 $DEPLOYPATH/manage.py migrate --noinput
-    # Redémarrer l'application
+    - mkdir -p $DEPLOYPATH/staticfiles
+    - mkdir -p $DEPLOYPATH/media
+    - chmod -R 755 $DEPLOYPATH
     - touch $DEPLOYPATH/tmp/restart.txt

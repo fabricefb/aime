@@ -33,11 +33,11 @@ DATABASES = {
     }
 }
 
-# Fichiers statiques et médias (même config que debug_settings)
+# Fichiers statiques et médias pour cPanel
 STATIC_URL = '/static/'
-STATIC_ROOT = '/home/cp2639565p41/aime-rdc/staticfiles/'
+STATIC_ROOT = '/home/cp2639565p41/public_html/staticfiles/'
 MEDIA_URL = '/media/'
-MEDIA_ROOT = '/home/cp2639565p41/aime-rdc/media/'
+MEDIA_ROOT = '/home/cp2639565p41/public_html/media/'
 
 # Configuration WhiteNoise pour les fichiers statiques en production
 MIDDLEWARE = [
@@ -91,12 +91,7 @@ EMAIL_HOST_PASSWORD = 'Wazenga007@Fab'
 DEFAULT_FROM_EMAIL = 'AIME RDC <web@aime-rdc.org>'
 SERVER_EMAIL = 'web@aime-rdc.org'
 
-# Fichiers statiques et médias pour la production
-STATIC_URL = '/static/'
-STATIC_ROOT = '/home/cp2639565p41/aime-rdc/staticfiles/'
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = '/home/cp2639565p41/aime-rdc/media/'
+# Les chemins statiques sont déjà définis plus haut - pas de duplication
 
 # Configuration WhiteNoise pour servir les fichiers statiques
 MIDDLEWARE = [

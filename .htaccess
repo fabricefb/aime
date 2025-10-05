@@ -1,7 +1,7 @@
-# .htaccess pour cPanel - Configuration Django
-# Rediriger tout vers passenger_wsgi.py
+# .htaccess pour cPanel - Configuration Django avec Passenger
+# Chemin vers Python 3.9 avec l'environnement virtuel
 
-PassengerPython /home/cp2639565p41/virtualenv/aime-rdc/3.9/bin/activate && cd /home/cp2639565p41/aime-rdc
+PassengerPython /home/cp2639565p41/virtualenv/public_html/3.9/bin/python
 
 # Configuration de base
 Options -MultiViews
