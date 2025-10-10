@@ -1,7 +1,9 @@
 # .htaccess pour cPanel - Configuration Django avec Passenger
-# Chemin vers Python 3.9 avec l'environnement virtuel
+# IMPORTANT : Spécifier le chemin Python COMPLET vers l'environnement virtuel
 
 PassengerPython /home/cp2639565p41/virtualenv/public_html/3.9/bin/python
+PassengerEnabled On
+PassengerAppRoot /home/cp2639565p41/public_html
 
 # Configuration de base
 Options -MultiViews
@@ -12,17 +14,27 @@ RewriteEngine On
 # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 # Rediriger tout vers l'application Django
+RewriteCond %{REQUEST_URI} !^/static/
+RewriteCond %{REQUEST_URI} !^/media/
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ passenger_wsgi.py/$1 [QSA,PT,L]
 
-# Configuration des fichiers statiques
+# IMPORTANT : Autoriser passenger_wsgi.py
 <Files "passenger_wsgi.py">
   Require all granted
 </Files>
 
-# Sécurité - Bloquer l'accès aux fichiers sensibles
-<FilesMatch "\.(py|sqlite|db|env)$">
+# Sécurité - Bloquer l'accès aux autres fichiers Python
+<FilesMatch "\.py$">
+  <Files "passenger_wsgi.py">
+    Require all granted
+  </Files>
+  Require all denied
+</FilesMatch>
+
+# Bloquer SQLite et fichiers sensibles
+<FilesMatch "\.(sqlite|db|env)$">
   Require all denied
 </FilesMatch>
 
