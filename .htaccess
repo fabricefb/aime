@@ -1,7 +1,7 @@
 # .htaccess pour cPanel - Configuration Django avec Passenger
 # IMPORTANT : Spécifier le chemin Python COMPLET vers l'environnement virtuel
 
-PassengerPython /home/cp2639565p41/virtualenv/public_html/3.9/bin/python
+PassengerPython /home/cp2639565p41/virtualenv/public_html/bin/python
 PassengerEnabled On
 PassengerAppRoot /home/cp2639565p41/public_html
 

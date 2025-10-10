@@ -5,7 +5,7 @@ import os
 # Chemins critiques pour cPanel - VÉRIFIÉS ET CORRIGÉS
 CPANEL_USER = 'cp2639565p41'
 PROJECT_DIR = f'/home/{CPANEL_USER}/public_html'  # Racine du projet Django
-VIRTUALENV_PATH = f'/home/{CPANEL_USER}/virtualenv/public_html/3.9'  # Environnement virtuel
+VIRTUALENV_PATH = f'/home/{CPANEL_USER}/virtualenv/public_html'  # Environnement virtuel (CORRIGÉ!)
 
 # Ajouter le chemin du projet
 if PROJECT_DIR not in sys.path:
