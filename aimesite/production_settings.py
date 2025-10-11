@@ -10,7 +10,20 @@ pymysql.install_as_MySQLdb()
 
 # SÉCURITÉ - Production mode
 DEBUG = False  # Production
-ALLOWED_HOSTS = ['aime-rdc.org', 'www.aime-rdc.org', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = [
+    'aime-rdc.org',
+    'www.aime-rdc.org',
+    '127.0.0.1',
+    'localhost',
+]
+
+# CSRF settings
+CSRF_TRUSTED_ORIGINS = [
+    'https://aime-rdc.org',
+    'https://www.aime-rdc.org',
+    'http://aime-rdc.org',
+    'http://www.aime-rdc.org',
+]
 
 # Configuration timezone pour éviter les erreurs de timestamp
 USE_TZ = True

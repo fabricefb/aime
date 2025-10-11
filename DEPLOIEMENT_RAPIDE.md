@@ -1,157 +1,311 @@
-# 🚀 GUIDE RAPIDE - DÉPLOIEMENT DES CORRECTIONS
+# ⚡ Déploiement Rapide - AIME RDC# 🚀 GUIDE RAPIDE - DÉPLOIEMENT DES CORRECTIONS
 
-## ✅ OPTION 1 : Déploiement depuis votre machine locale (RECOMMANDÉ)
 
-### Prérequis :
+
+## 🚀 Commande Ultra-Rapide## ✅ OPTION 1 : Déploiement depuis votre machine locale (RECOMMANDÉ)
+
+
+
+**Pour déployer ou mettre à jour :**### Prérequis :
+
 - Avoir configuré SSH pour se connecter à votre serveur
-- Le script `deploy-fixes.sh` est dans votre dépôt local
 
-### Commandes :
+```bash- Le script `deploy-fixes.sh` est dans votre dépôt local
 
-```bash
+ssh cp2639565p41@aime-rdc.org 'cd /home/cp2639565p41/repositories/aime && git pull origin main && ./deploy-auto.sh'
+
+```### Commandes :
+
+
+
+---```bash
+
 # 1. Rendre le script exécutable
-chmod +x deploy-fixes.sh
 
-# 2. Exécuter le déploiement
+## 📋 Prérequis (Une seule fois)chmod +x deploy-fixes.sh
+
+
+
+### 1. Créer l'Application Python dans cPanel# 2. Exécuter le déploiement
+
 ./deploy-fixes.sh
-```
 
-Le script va :
-1. ✅ Pull les modifications depuis GitHub sur le serveur
-2. ✅ Copier les fichiers vers `/public_html`
-3. ✅ Installer les dépendances Python
-4. ✅ Appliquer les migrations
+``````
+
+Python version   : 3.9.19
+
+Application root : aimeLe script va :
+
+Application URL  : /1. ✅ Pull les modifications depuis GitHub sur le serveur
+
+Startup file     : passenger_wsgi.py2. ✅ Copier les fichiers vers `/public_html`
+
+Entry point      : application3. ✅ Installer les dépendances Python
+
+```4. ✅ Appliquer les migrations
+
 5. ✅ Collecter les fichiers statiques
-6. ✅ Corriger les permissions
+
+### 2. Variables d'Environnement (cPanel)6. ✅ Corriger les permissions
+
 7. ✅ Redémarrer l'application
 
-**Durée : 2-3 minutes**
-
----
-
-## ✅ OPTION 2 : Déploiement direct sur le serveur
-
-### Étape 1 : Se connecter en SSH
-
 ```bash
-ssh cp2639565p41@aime-rdc.org
+
+DJANGO_SETTINGS_MODULE = aimesite.production_settings**Durée : 2-3 minutes**
+
+DEBUG = False
+
+ALLOWED_HOSTS = aime-rdc.org,www.aime-rdc.org---
+
+DB_NAME = cp2639565p41_aimer2639565
+
+DB_USER = cp2639565p41_aimer2639565## ✅ OPTION 2 : Déploiement direct sur le serveur
+
+DB_PASSWORD = votre_mot_de_passe
+
+SECRET_KEY = générer_avec_commande_ci-dessous### Étape 1 : Se connecter en SSH
+
 ```
 
-### Étape 2 : Télécharger le script de déploiement
-
 ```bash
+
+**Générer SECRET_KEY :**ssh cp2639565p41@aime-rdc.org
+
+```bash```
+
+python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
+
+```### Étape 2 : Télécharger le script de déploiement
+
+
+
+### 3. Configuration SSH GitHub (Une seule fois)```bash
+
 cd /home/cp2639565p41
-wget https://raw.githubusercontent.com/fabricefb/aime/main/deploy-on-server.sh
-chmod +x deploy-on-server.sh
-```
 
-### Étape 3 : Exécuter le déploiement
+```bashwget https://raw.githubusercontent.com/fabricefb/aime/main/deploy-on-server.sh
 
-```bash
+ssh cp2639565p41@aime-rdc.orgchmod +x deploy-on-server.sh
+
+ssh-keygen -t ed25519 -C "cp2639565p41@aime-rdc.org" -N "" -f ~/.ssh/id_ed25519```
+
+cat ~/.ssh/id_ed25519.pub  # Copier et ajouter sur GitHub
+
+```### Étape 3 : Exécuter le déploiement
+
+
+
+Ajoutez la clé sur : https://github.com/settings/keys```bash
+
 bash deploy-on-server.sh
-```
 
----
+---```
 
-## ✅ OPTION 3 : Déploiement manuel (étape par étape)
 
-Si vous préférez le faire manuellement :
 
-```bash
-# 1. Connexion SSH
-ssh cp2639565p41@aime-rdc.org
+## 🔧 Première Installation---
 
-# 2. Pull depuis GitHub
-cd /home/cp2639565p41/repositories/aime
-git pull origin main
 
-# 3. Copier vers public_html
+
+```bash## ✅ OPTION 3 : Déploiement manuel (étape par étape)
+
+# 1. Se connecter
+
+ssh cp2639565p41@aime-rdc.orgSi vous préférez le faire manuellement :
+
+
+
+# 2. Cloner le dépôt```bash
+
+cd /home/cp2639565p41/repositories# 1. Connexion SSH
+
+git clone git@github.com:fabricefb/aime.gitssh cp2639565p41@aime-rdc.org
+
+
+
+# 3. Lancer le déploiement# 2. Pull depuis GitHub
+
+cd aimecd /home/cp2639565p41/repositories/aime
+
+chmod +x deploy-auto.shgit pull origin main
+
+./deploy-auto.sh
+
+```# 3. Copier vers public_html
+
 cp -R /home/cp2639565p41/repositories/aime/* /home/cp2639565p41/public_html/
-cp /home/cp2639565p41/repositories/aime/.htaccess /home/cp2639565p41/public_html/
 
-# 4. Activer l'environnement virtuel
+---cp /home/cp2639565p41/repositories/aime/.htaccess /home/cp2639565p41/public_html/
+
+
+
+## 🔄 Mises à Jour Ultérieures# 4. Activer l'environnement virtuel
+
 source /home/cp2639565p41/virtualenv/public_html/3.9/bin/activate
 
-# 5. Aller dans public_html
-cd /home/cp2639565p41/public_html
+```bash
 
-# 6. Installer les dépendances
-pip install -r requirements.txt
+# Méthode 1 : Depuis votre machine locale# 5. Aller dans public_html
 
-# 7. Appliquer les migrations
-python manage.py migrate --noinput
+ssh cp2639565p41@aime-rdc.org 'cd /home/cp2639565p41/repositories/aime && git pull && ./deploy-auto.sh'cd /home/cp2639565p41/public_html
 
-# 8. Collecter les fichiers statiques
+
+
+# Méthode 2 : Connecté au serveur# 6. Installer les dépendances
+
+cd /home/cp2639565p41/repositories/aimepip install -r requirements.txt
+
+git pull origin main
+
+./deploy-auto.sh# 7. Appliquer les migrations
+
+```python manage.py migrate --noinput
+
+
+
+---# 8. Collecter les fichiers statiques
+
 python manage.py collectstatic --noinput --clear
 
+## 📍 Chemins Importants
+
 # 9. Corriger les permissions
-chmod -R 755 /home/cp2639565p41/public_html
 
-# 10. Redémarrer l'application
-touch /home/cp2639565p41/public_html/tmp/restart.txt
+```chmod -R 755 /home/cp2639565p41/public_html
+
+Application       : /home/cp2639565p41/aime
+
+Dépôt Git        : /home/cp2639565p41/repositories/aime# 10. Redémarrer l'application
+
+Public HTML      : /home/cp2639565p41/public_htmltouch /home/cp2639565p41/public_html/tmp/restart.txt
+
+Virtualenv       : /home/cp2639565p41/virtualenv/aime/3.9```
+
+Logs             : /home/cp2639565p41/logs/error_log
+
+WSGI Errors      : /home/cp2639565p41/aime/wsgi_error.log---
+
 ```
-
----
 
 ## 📋 VÉRIFICATION POST-DÉPLOIEMENT
 
+---
+
 ### 1. Vérifier que le site fonctionne
 
+## 🔍 Vérifications Rapides
+
 ```bash
-curl -I https://aime-rdc.org
-```
+
+```bashcurl -I https://aime-rdc.org
+
+# Voir les logs d'erreur```
+
+tail -n 50 ~/logs/error_log
 
 **Résultat attendu :**
+
+# Redémarrer manuellement```
+
+cd ~/aime && touch tmp/restart.txtHTTP/2 200
+
 ```
-HTTP/2 200
-```
 
-**Si vous voyez 500 :** Consultez les logs (voir ci-dessous)
+# Vérifier les fichiers statiques
 
-### 2. Vérifier dans le navigateur
+ls -la ~/public_html/staticfiles/admin/**Si vous voyez 500 :** Consultez les logs (voir ci-dessous)
 
-Ouvrir : **https://aime-rdc.org**
 
-✅ La page d'accueil doit s'afficher  
+
+# Tester la connexion MySQL### 2. Vérifier dans le navigateur
+
+mysql -u cp2639565p41_aimer2639565 -p cp2639565p41_aimer2639565
+
+```Ouvrir : **https://aime-rdc.org**
+
+
+
+---✅ La page d'accueil doit s'afficher  
+
 ✅ Les images et CSS doivent charger  
-✅ Aucune erreur 500  
 
-### 3. Tester l'administration
+## ✅ Après Déploiement✅ Aucune erreur 500  
 
-Ouvrir : **https://aime-rdc.org/admin**
 
-✅ La page de connexion doit s'afficher  
+
+1. ⏰ **Attendre 10-15 secondes**### 3. Tester l'administration
+
+2. 🌐 **Tester** : https://aime-rdc.org
+
+3. 🔐 **Admin** : https://aime-rdc.org/admin/Ouvrir : **https://aime-rdc.org/admin**
+
+
+
+---✅ La page de connexion doit s'afficher  
+
 ✅ Connexion avec votre compte admin doit fonctionner  
+
+## 🆘 Problèmes Courants
 
 ---
 
-## 🐛 EN CAS DE PROBLÈME
+### Erreur 500
 
-### Consulter les logs d'erreur
+```bash## 🐛 EN CAS DE PROBLÈME
 
-```bash
-# Log Apache
-ssh cp2639565p41@aime-rdc.org "tail -n 50 ~/logs/error_log"
+tail -n 100 ~/logs/error_log
 
-# Log WSGI (créé automatiquement si erreur)
-ssh cp2639565p41@aime-rdc.org "cat ~/public_html/wsgi_error.log"
+cat ~/aime/wsgi_error.log### Consulter les logs d'erreur
+
 ```
 
-### Vérifier les chemins dans passenger_wsgi.py
-
 ```bash
+
+### Erreur DisallowedHost# Log Apache
+
+Vérifiez `ALLOWED_HOSTS` dans les variables d'environnement cPanel.ssh cp2639565p41@aime-rdc.org "tail -n 50 ~/logs/error_log"
+
+
+
+### CSS/JS ne se chargent pas# Log WSGI (créé automatiquement si erreur)
+
+```bashssh cp2639565p41@aime-rdc.org "cat ~/public_html/wsgi_error.log"
+
+cd ~/aime```
+
+source ~/virtualenv/aime/3.9/bin/activate
+
+python manage.py collectstatic --noinput --clear### Vérifier les chemins dans passenger_wsgi.py
+
+touch tmp/restart.txt
+
+``````bash
+
 ssh cp2639565p41@aime-rdc.org "cat ~/public_html/passenger_wsgi.py | grep PROJECT_DIR"
+
+---```
+
+
+
+## 📚 Documentation Complète**Résultat attendu :**
+
 ```
 
-**Résultat attendu :**
+Voir : [GUIDE_DEPLOIEMENT_COMPLET.md](GUIDE_DEPLOIEMENT_COMPLET.md)PROJECT_DIR = f'/home/cp2639565p41/public_html'
+
 ```
-PROJECT_DIR = f'/home/cp2639565p41/public_html'
-```
+
+---
 
 ### Vérifier que Django fonctionne
 
-```bash
-ssh cp2639565p41@aime-rdc.org
+**Site** : https://aime-rdc.org  
+
+**Admin** : https://aime-rdc.org/admin/  ```bash
+
+**Dernière mise à jour** : 11 Octobre 2025ssh cp2639565p41@aime-rdc.org
+
 cd /home/cp2639565p41/public_html
 source /home/cp2639565p41/virtualenv/public_html/3.9/bin/activate
 python manage.py check

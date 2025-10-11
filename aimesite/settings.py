@@ -25,10 +25,20 @@ SECRET_KEY = 'django-insecure-$0#x33p&*n&+1b!qh@xbr(a&)fcdr!1-6gahs2d^2(i6dx%@i(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
+ALLOWED_HOSTS = [
+    'aime-rdc.org',
+    'www.aime-rdc.org',
+    'localhost',
+    '127.0.0.1',
+    '0.0.0.0',
+]
 
 # CSRF settings
 CSRF_TRUSTED_ORIGINS = [
+    'https://aime-rdc.org',
+    'https://www.aime-rdc.org',
+    'http://aime-rdc.org',
+    'http://www.aime-rdc.org',
     'http://localhost:8000',
     'https://localhost:8000',
     'http://127.0.0.1:8000',
