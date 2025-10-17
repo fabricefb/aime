@@ -18,6 +18,27 @@ media/
 .eggs/
 db.sqlite3
 .env.*
+
+# Deployment packages
+deployment_package/
+deployment_package.zip
+*.tar.gz
+
+# Cache and temporary files
+.cache/
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Backup files
+*.bak
+*.backup
+
+# WSGI error logs
+wsgi_error.log
+django.log
 # macOS
 .DS_Store
 # VS Code
