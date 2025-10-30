@@ -1,62 +1,8 @@
 """
-Django settings for aimesite project - OPTIMISÉ & SÉCURISÉ
-Version: 2.0 - Octobre 2025
-
-Configuration production-ready avec:
-- Variables d'environnement sécurisées
-- Cache Redis
-- Compression static files
-- Security headers
-- Performance optimizations
+Django settings for aimesite project - VERSION SÉCURISÉE
+Optimisé pour performance et sécurité
+Généré le 30 octobre 2025
 """
-
-from pathlib import Path
-import os
-from decouple import config, Csv
-import dj_database_url
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-# ==============================================================================
-# SECURITY SETTINGS - PRODUCTION READY
-# ==============================================================================
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY', default='django-insecure-temporary-key-CHANGE-IN-PRODUCTION')
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=False, cast=bool)
-
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', 
-    default='aime-rdc.org,www.aime-rdc.org,localhost,127.0.0.1',
-    cast=Csv()
-)
-
-# CSRF settings
-CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS',
-    default='https://aime-rdc.org,https://www.aime-rdc.org',
-    cast=Csv()
-)
-
-# Security settings (Production)
-if not DEBUG:
-    SECURE_SSL_REDIRECT = True
-    SECURE_HSTS_SECONDS = 31536000
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
-    SECURE_BROWSER_XSS_FILTER = True
-    SECURE_CONTENT_TYPE_NOSNIFF = True
-    X_FRAME_OPTIONS = 'DENY'
-    CSRF_COOKIE_SECURE = True
-    SESSION_COOKIE_SECURE = True
-    SESSION_COOKIE_HTTPONLY = True
-    SESSION_COOKIE_SAMESITE = 'Strict'
-else:
-    # Development settings
-    CSRF_COOKIE_SECURE = False
-    CSRF_COOKIE_HTTPONLY = False
-    SESSION_COOKIE_SECURE = False
 
 from pathlib import Path
 from decouple import config, Csv

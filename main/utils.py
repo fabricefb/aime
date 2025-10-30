@@ -1,5 +1,6 @@
 from django.db.models import Sum, Count, Q
 from django.contrib.auth.models import User
+from django.core.cache import cache
 from .models import (
     Donation, MBCParticipant, Event, Project, UserProfile, 
     EventParticipation, StaffContribution, ImpactPoint
@@ -9,8 +10,19 @@ def get_site_statistics():
     """
     Calcule et retourne toutes les statistiques dynamiques du site
     basées sur les vraies données de la base de données
+    
+    OPTIMISATION: Utilise le cache Redis pour éviter les calculs répétés
+    Cache de 5 minutes (300 secondes)
     """
     
+    # Essayer de récupérer depuis le cache
+    cache_key = 'site_statistics_v1'
+    cached_stats = cache.get(cache_key)
+    
+    if cached_stats is not None:
+        return cached_stats
+    
+    # Si pas en cache, calculer les statistiques
     # 1. FC collectés (total des dons complétés)
     total_donations = Donation.objects.filter(
         status='completed'
@@ -75,7 +87,7 @@ def get_site_statistics():
     # Provinces touchées (basé sur les données réelles de localisation)
     provinces_count = 1  # Commencer avec 1 (Kinshasa par défaut)
     
-    return {
+    stats = {
         'total_donations': int(total_donations),
         'total_children_helped': total_children_helped,
         'active_projects': active_projects,
@@ -94,6 +106,11 @@ def get_site_statistics():
         'total_volunteers': UserProfile.objects.filter(role='volunteer').count(),
         'total_donors': Donation.objects.values('donor_email').distinct().count(),
     }
+    
+    # Mettre en cache pour 5 minutes (300 secondes)
+    cache.set(cache_key, stats, 300)
+    
+    return stats
 
 def format_number(number):
     """

@@ -81,14 +81,17 @@ class UserProfile(models.Model):
 
 class Category(models.Model):
     """Catégories pour les projets et causes"""
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, db_index=True)
     description = models.TextField(blank=True)
     icon = models.CharField(max_length=50, blank=True)  # Pour les icônes CSS
     color = models.CharField(max_length=7, default='#007bff')  # Code couleur hex
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True, db_index=True)
     
     class Meta:
         verbose_name_plural = "Categories"
+        indexes = [
+            models.Index(fields=['is_active', 'name']),
+        ]
     
     def __str__(self):
         return self.name
@@ -102,8 +105,8 @@ class Project(models.Model):
         ('suspended', 'Suspendu'),
     ]
     
-    name = models.CharField(max_length=200)
-    slug = models.SlugField(unique=True)
+    name = models.CharField(max_length=200, db_index=True)
+    slug = models.SlugField(unique=True, db_index=True)
     description = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='projects/', blank=True)
@@ -111,15 +114,23 @@ class Project(models.Model):
     raised_amount = models.DecimalField(max_digits=12, decimal_places=2, default=0)
     start_date = models.DateField()
     end_date = models.DateField(null=True, blank=True)
-    status = models.CharField(max_length=20, choices=PROJECT_STATUS, default='planning')
+    status = models.CharField(max_length=20, choices=PROJECT_STATUS, default='planning', db_index=True)
     coordinator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
-    is_featured = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
+    is_featured = models.BooleanField(default=False, db_index=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True)
     
     # Métriques d'impact
     beneficiaries_count = models.IntegerField(default=0)
     volunteers_count = models.IntegerField(default=0)
+    
+    class Meta:
+        indexes = [
+            models.Index(fields=['status', '-created_at']),
+            models.Index(fields=['is_featured', 'status']),
+            models.Index(fields=['-created_at']),
+        ]
+        ordering = ['-created_at']
     
     def __str__(self):
         return self.name
@@ -202,11 +213,11 @@ class Event(models.Model):
         ('community', 'Communautaire'),
     ]
     
-    title = models.CharField(max_length=200)
-    slug = models.SlugField(unique=True)
+    title = models.CharField(max_length=200, db_index=True)
+    slug = models.SlugField(unique=True, db_index=True)
     description = models.TextField()
-    event_type = models.CharField(max_length=20, choices=EVENT_TYPES)
-    date = models.DateTimeField()
+    event_type = models.CharField(max_length=20, choices=EVENT_TYPES, db_index=True)
+    date = models.DateTimeField(db_index=True)
     end_date = models.DateTimeField(null=True, blank=True)
     location = models.CharField(max_length=200)
     max_attendees = models.IntegerField(null=True, blank=True)
@@ -214,8 +225,17 @@ class Event(models.Model):
     price = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
     organizer = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='events/', blank=True)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    is_public = models.BooleanField(default=True, db_index=True)
+    
+    class Meta:
+        indexes = [
+            models.Index(fields=['is_active', 'date']),
+            models.Index(fields=['event_type', 'is_active']),
+            models.Index(fields=['-date']),
+        ]
+        ordering = ['-date']
     
     def __str__(self):
         return self.title
@@ -230,16 +250,24 @@ class Donation(models.Model):
     ]
     
     donor_name = models.CharField(max_length=100)
-    donor_email = models.EmailField()
+    donor_email = models.EmailField(db_index=True)
     donor_phone = models.CharField(max_length=20, blank=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     currency = models.CharField(max_length=3, default='CDF')
     project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True, blank=True)
     message = models.TextField(blank=True)
     is_anonymous = models.BooleanField(default=False)
-    status = models.CharField(max_length=20, choices=DONATION_STATUS, default='pending')
-    transaction_id = models.CharField(max_length=100, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=20, choices=DONATION_STATUS, default='pending', db_index=True)
+    transaction_id = models.CharField(max_length=100, blank=True, db_index=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    
+    class Meta:
+        indexes = [
+            models.Index(fields=['status', '-created_at']),
+            models.Index(fields=['donor_email', 'status']),
+            models.Index(fields=['project', 'status']),
+        ]
+        ordering = ['-created_at']
     
     def __str__(self):
         return f"{self.donor_name} - {self.amount} {self.currency}"

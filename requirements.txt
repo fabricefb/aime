@@ -1,32 +1,70 @@
-# Requirements pour Python 3.9 - Serveur Production
-# Optimisé pour éviter les problèmes de compilation
+# ============================================================================
+# AIME Requirements - Version Optimisée 2.0
+# Python 3.9+ - Production Ready
+# ============================================================================
 
+# ====================
 # Django Core
+# ====================
 Django==4.2.14
 asgiref==3.8.1
 sqlparse==0.5.3
 tzdata==2025.2
 
+# ====================
 # Database
+# ====================
 pymysql==1.1.0
+psycopg2-binary==2.9.11
+dj-database-url==3.0.1
 
-# API Framework
-djangorestframework==3.15.2
+# ====================
+# Cache & Performance
+# ====================
+django-redis==6.0.0
+redis==7.0.1
 
-# Production essentials
-gunicorn==21.2.0
+# ====================
+# Static Files & Compression
+# ====================
 whitenoise==6.6.0
 
-# Security & Performance
+# ====================
+# Security & Configuration
+# ====================
+python-decouple==3.8
 django-cors-headers==4.3.1
 django-environ==0.11.2
 
-# Optional: Useful packages for production
+# ====================
+# Rate Limiting & Protection
+# ====================
+django-ratelimit==4.1.0
+
+# ====================
+# Images & Media
+# ====================
 pillow==10.1.0
+
+# ====================
+# API & HTTP
+# ====================
+djangorestframework==3.15.2
 requests==2.31.0
+
+# ====================
+# Production Server
+# ====================
+gunicorn==21.2.0
+
+# ====================
+# Utilities
+# ====================
 python-dateutil==2.8.2
 
-# Development tools (commented for production)
+# ====================
+# Development Tools (commented for production)
+# ====================
 # django-debug-toolbar==4.2.0
 # pytest==7.4.3
 # pytest-django==4.6.0

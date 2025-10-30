@@ -19,12 +19,17 @@ from .forms import ContactForm, NewsletterForm, MBCRegistrationForm, DonationFor
 from .utils import get_site_statistics
 
 def home(request):
-    """Page d'accueil AIME"""
-    featured_projects = Project.objects.filter(is_featured=True, status='active')[:3]
+    """Page d'accueil AIME - Optimisée"""
+    # Optimisation: select_related pour éviter N+1 queries
+    featured_projects = Project.objects.filter(
+        is_featured=True, 
+        status='active'
+    ).select_related('category', 'coordinator')[:3]
+    
     upcoming_events = Event.objects.filter(
         date__gte=timezone.now(),
         is_active=True
-    ).order_by('date')[:3]
+    ).select_related('organizer').order_by('date')[:3]
     
     recent_mbc = MutotoBikeChallenge.objects.filter(
         is_active=True,
@@ -54,9 +59,21 @@ def about(request):
     return render(request, 'main/about.html', context)
 
 def projects(request):
-    """Liste des projets"""
-    projects_list = Project.objects.filter(status='active').order_by('-created_at')
-    categories = Category.objects.filter(is_active=True)
+    """Liste des projets - Optimisée"""
+    # Optimisation: select_related et only pour charger uniquement les champs nécessaires
+    projects_list = Project.objects.filter(
+        status='active'
+    ).select_related(
+        'category', 
+        'coordinator'
+    ).only(
+        'id', 'name', 'slug', 'description', 'image',
+        'raised_amount', 'goal_amount', 'status', 'created_at',
+        'category__name', 'category__color',
+        'coordinator__first_name', 'coordinator__last_name'
+    ).order_by('-created_at')
+    
+    categories = Category.objects.filter(is_active=True).only('id', 'name', 'slug', 'color')
     
     # Filtrage par catégorie
     category_filter = request.GET.get('category')
@@ -85,11 +102,17 @@ def projects(request):
     return render(request, 'main/projects.html', context)
 
 def project_detail(request, slug):
-    """Détail d'un projet"""
-    project = get_object_or_404(Project, slug=slug)
+    """Détail d'un projet - Optimisé"""
+    project = get_object_or_404(
+        Project.objects.select_related('category', 'coordinator'),
+        slug=slug
+    )
+    
     recent_donations = Donation.objects.filter(
         project=project,
         status='completed'
+    ).only(
+        'donor_name', 'amount', 'currency', 'created_at', 'is_anonymous'
     ).order_by('-created_at')[:5]
     
     context = {

@@ -35,12 +35,17 @@ htmlcov/
 # Backup files
 *.bak
 *.backup
+backups/
 
-# WSGI error logs
+# Logs
 wsgi_error.log
 django.log
+logs/
+*.log
+
 # macOS
 .DS_Store
+
 # VS Code
 .vscode/
 
@@ -48,6 +53,12 @@ django.log
 *.zip
 aime-rdc-cpanel-deployment.zip
 deployment-complete.zip
+
+# Environment files (CRITIQUE - NE JAMAIS COMMITER)
+.env
+.env.local
+.env.production
+.env.*.local
 deployment/
 # Archives de déploiement
 deployment-*.zip
